@@ -1,59 +1,43 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
-    <breadcrumb class="breadcrumb-container" />
-
-    <div class="right-menu">
-      <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              Home
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+    <hamburger
+      is-active="$store.state.app.sidebar.opened"
+      class="hamburger-container"
+      @click.native="iconClick"
+    />
+    <div class="company">
+      <span>江苏传智播客教育科技股份有限公司</span>
+      <span class="exp">体验版</span>
     </div>
+    <el-dropdown>
+      <div class="user">
+        <img src="@/assets/common/img.jpeg" alt="">
+        <span class="username">练习时长两年半</span>
+        <i class="el-icon-arrow-down" />
+      </div>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item>首页</el-dropdown-item>
+          <el-dropdown-item>项目地址</el-dropdown-item>
+          <el-dropdown-item>退出</el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
-
+import hamburger from '@/components/Hamburger'
 export default {
   components: {
-    Breadcrumb,
-    Hamburger
-  },
-  computed: {
-    ...mapGetters([
-      'sidebar',
-      'avatar'
-    ])
+    hamburger
   },
   methods: {
-    toggleSideBar() {
-      this.$store.dispatch('app/toggleSideBar')
+    gohome() {
+      console.log('退出')
     },
-    async logout() {
-      await this.$store.dispatch('user/logout')
-      this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    iconClick() {
+      this.$store.dispatch('app/toggleSideBar')
     }
   }
 }
@@ -61,78 +45,40 @@ export default {
 
 <style lang="scss" scoped>
 .navbar {
+  display: flex;
   height: 50px;
-  overflow: hidden;
-  position: relative;
-  background: #fff;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
-
+  align-items: center;
+  justify-content: center;
+  background-color: #4d7dfc;
+  color: #fff;
+  .user {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    color: #fff;
+    .username {
+      margin: 0 12px;
+    }
+  }
+  .company {
+    flex: 1;
+    .exp {
+      padding: 4px;
+      border-radius: 8px;
+      background-color: #84a9fe;
+      margin-left: 10px;
+      font-size: 13px;
+    }
+  }
+  img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
   .hamburger-container {
-    line-height: 46px;
-    height: 100%;
-    float: left;
     cursor: pointer;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
-
-    &:hover {
-      background: rgba(0, 0, 0, .025)
-    }
-  }
-
-  .breadcrumb-container {
-    float: left;
-  }
-
-  .right-menu {
-    float: right;
-    height: 100%;
-    line-height: 50px;
-
-    &:focus {
-      outline: none;
-    }
-
-    .right-menu-item {
-      display: inline-block;
-      padding: 0 8px;
-      height: 100%;
-      font-size: 18px;
-      color: #5a5e66;
-      vertical-align: text-bottom;
-
-      &.hover-effect {
-        cursor: pointer;
-        transition: background .3s;
-
-        &:hover {
-          background: rgba(0, 0, 0, .025)
-        }
-      }
-    }
-
-    .avatar-container {
-      margin-right: 30px;
-
-      .avatar-wrapper {
-        margin-top: 5px;
-        position: relative;
-
-        .user-avatar {
-          cursor: pointer;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-        }
-
-        .el-icon-caret-bottom {
-          cursor: pointer;
-          position: absolute;
-          right: -20px;
-          top: 25px;
-          font-size: 12px;
-        }
-      }
+    ::v-deep svg {
+      fill: #fff;
     }
   }
 }
