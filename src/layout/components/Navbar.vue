@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <hamburger
-      is-active="$store.state.app.sidebar.opened"
+      :is-active="$store.state.app.sidebar.opened"
       class="hamburger-container"
       @click.native="iconClick"
     />
@@ -19,7 +19,7 @@
         <el-dropdown-menu>
           <el-dropdown-item>首页</el-dropdown-item>
           <el-dropdown-item>项目地址</el-dropdown-item>
-          <el-dropdown-item>退出</el-dropdown-item>
+          <el-dropdown-item @click.native="gohome">退出</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
