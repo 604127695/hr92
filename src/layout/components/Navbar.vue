@@ -11,8 +11,12 @@
     </div>
     <el-dropdown>
       <div class="user">
-        <img src="@/assets/common/img.jpeg" alt="">
-        <span class="username">练习时长两年半</span>
+        <img
+          v-imgerror="avatar"
+          :src="$store.state.user.userInfo.staffPhoto"
+          alt=""
+        >
+        <span class="username">{{ $store.state.user.userInfo.username }}</span>
         <i class="el-icon-arrow-down" />
       </div>
       <template #dropdown>
@@ -32,9 +36,21 @@ export default {
   components: {
     hamburger
   },
+  data() {
+    return {
+      avatar: require('@/assets/common/bigUserHeader.png')
+    }
+  },
   methods: {
+    // 退出
     gohome() {
-      console.log('退出')
+      this.$confirm('你确定要退出吗？')
+        .then(() => {
+          this.$message.success('登录成功')
+          this.$store.commit('user/LOGOUT')
+          this.$router.push('/login')
+        })
+        .catch(() => {})
     },
     iconClick() {
       this.$store.dispatch('app/toggleSideBar')
